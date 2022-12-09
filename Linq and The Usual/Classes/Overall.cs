@@ -39,8 +39,7 @@
                 }
             }
             Array.Resize(ref allSalary, allSalary.Length - match);
-            AllSalary = new T[allSalary.Length];
-            allSalary.CopyTo(AllSalary, 0);
+            AllSalary = allSalary;
         }
     }
 }

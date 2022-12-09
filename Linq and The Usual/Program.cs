@@ -3,7 +3,6 @@
 namespace _12._3
 {
 
-
     class Program
     {
         static void Main()
@@ -19,7 +18,7 @@ namespace _12._3
             }
             Console.WriteLine("\n");
             //1
-            #region Ordinary
+            #region Ordinary 12.3.1
             Console.WriteLine("New groups (Ordinary way):");
             Console.WriteLine("Even Numbers(" + arr.EvenSum + "): ");
             for (int i = 0; i < arr.EvenNumbers.Length; i++)
@@ -36,7 +35,7 @@ namespace _12._3
             Console.WriteLine();
             #endregion
 
-            #region LINQ
+            #region LINQ 12.3.1
             Console.WriteLine();
             /*var Output = sex.GroupBy(
             number => number = number ,
@@ -65,7 +64,7 @@ namespace _12._3
 
 
             //2
-            #region Ordinary
+            #region Ordinary 12.3.2
             Console.WriteLine();
             Console.WriteLine("Collection of summed salaries for recurring names (Ordinary way).");
             var collection = new Worker[]
@@ -84,6 +83,30 @@ namespace _12._3
             }
             #endregion
 
+            #region LINQ 12.3.2
+
+            #endregion
+
+
+            #region Ordinary 12.3.3
+            Console.WriteLine();
+            Console.WriteLine("Collection of elements that recur only 3 times (Ordinary way).");
+            Random rand = new();
+            int[] lottaNumbers = new int[] {5, 5, 277, 5, 7, 2, 7, 1, 7, 21, 54, 277, 3, 11, 11, 11, 4234, 27, 277};
+            /*int[] lottaNumbers = new int[100000];
+            for (int i = 0; i < lottaNumbers.Length; i++)
+            {
+                lottaNumbers[i] = rand.Next(100);
+            }*/
+
+            StupidClass<int> numbers = new(lottaNumbers);
+
+            for (int i = 0; i < numbers.NewArray.Length; i++)
+            {
+                Console.Write(numbers.NewArray[i] + " ");
+            }
+            Console.WriteLine();
+            #endregion
         }
     }
 }
