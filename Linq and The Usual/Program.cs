@@ -18,95 +18,178 @@ namespace _12._3
             }
             Console.WriteLine("\n");
             //1
-            #region Ordinary 12.3.1
-            Console.WriteLine("New groups (Ordinary way):");
-            Console.WriteLine("Even Numbers(" + arr.EvenSum + "): ");
-            for (int i = 0; i < arr.EvenNumbers.Length; i++)
-            {
-                Console.Write(arr.EvenNumbers[i] + " ");
-            }
-            Console.WriteLine();
+            #region Query 12.3.1
+            //Console.WriteLine("New groups (Ordinary way):");
+            //Console.WriteLine("Even Numbers(" + arr.EvenSum + "): ");
+            //for (int i = 0; i < arr.EvenNumbers.Length; i++)
+            //{
+            //    Console.Write(arr.EvenNumbers[i] + " ");
+            //}
+            //Console.WriteLine();
 
-            Console.WriteLine("Odd Numbers(" + arr.OddSum + "): ");
-            for (int i = 0; i < arr.OddNumbers.Length; i++)
+            //Console.WriteLine("Odd Numbers(" + arr.OddSum + "): ");
+            //for (int i = 0; i < arr.OddNumbers.Length; i++)
+            //{
+            //    Console.Write(arr.OddNumbers[i] + " ");
+            //}
+            //Console.WriteLine();
+
+
+            var queryLinqArray = from element in sex.Select((number, even) => new { number, even = number % 2 })
+                                 group element.number by element.even into groups
+                                 select new { Group = groups.Key, Sum = groups.Sum() };
+
+            Console.WriteLine("Query LINQ : ");
+            foreach (var group in queryLinqArray)
             {
-                Console.Write(arr.OddNumbers[i] + " ");
+                Console.Write($"{group.Group} : {group.Sum}");
+                Console.WriteLine();
             }
-            Console.WriteLine();
+
+
             #endregion
 
-            #region LINQ 12.3.1
+            #region Method 12.3.1
             Console.WriteLine();
-            /*var Output = sex.GroupBy(
-            number => number = number ,
-            number => number % 2 != 0,
-            (even, odd) => new
-            {
-            Odd = odd,
-            Even = even
-            });*/
 
-            /*var Output = from element in sex
-            group element by element % 2 == 0;*/
+            var methodLinqArray = sex.GroupBy((int groups) => groups % 2).Select(p => new { Group = p.Key, Sum = p.Sum() });
+            Console.WriteLine();
+            Console.WriteLine("Method LINQ : ");
 
-            /*foreach(var item in Output)
+            foreach (var groups in methodLinqArray)
             {
-            //Console.WriteLine("Even numbers: ");
-            foreach (var element in item)
-            {
-
+                Console.WriteLine($"{groups.Group} : {groups.Sum}");
             }
-
-            }*/
 
 
             #endregion
 
 
             //2
-            #region Ordinary 12.3.2
+
             Console.WriteLine();
             Console.WriteLine("Collection of summed salaries for recurring names (Ordinary way).");
             var collection = new Worker[]
             {
                 new("Obama", 1999),
                 new("Roomba", 100000),
-                new("Obama", 10000)
+                new("Roomba", 120000),
+                new("Obama", 10000),
+                new("Grey", 50)
             };
 
-            Overall<Worker> overall = new(collection);
+            #region LINQ Query 12.3.2
 
-            for (int i = 0; i < overall.AllSalary.Length; i++)
+            Console.WriteLine("\nLINQ Query 12.3.2:");
+            var queryLinqArray2 = from element in collection
+                                  group element.Salary by element.Name into workers
+                                  select new { Name = workers.Key, Sum = workers.Sum() };
+
+            foreach (var group in queryLinqArray2)
             {
-                Console.WriteLine("Name: " + overall.AllSalary[i].Name + "; Salary: " +
-                    overall.AllSalary[i].Salary);
+                Console.Write($"{group.Name} : {group.Sum}");
+                Console.WriteLine();
             }
             #endregion
 
-            #region LINQ 12.3.2
+            #region LINQ Method 12.3.2
+            //Overall<Worker> overall = new(collection);
+
+            //for (int i = 0; i < overall.AllSalary.Length; i++)
+            //{
+            //    Console.WriteLine("Name: " + overall.AllSalary[i].Name + "; Salary: " +
+            //        overall.AllSalary[i].Salary);
+            //}
+            Console.WriteLine("\nLINQ Method 12.3.2:");
+
+            var methodLinqArray2 = collection
+                .GroupBy(name => name.Name)
+                .Select(result => new
+                {
+                    Name = result.Key,
+                    Sum = result.Select(p => p.Salary).Sum()
+                }
+                );
+
+            foreach (var groups in methodLinqArray2)
+            {
+                Console.WriteLine($"{groups.Name} : {groups.Sum}");
+            }
 
             #endregion
 
 
-            #region Ordinary 12.3.3
+
+
+            
             Console.WriteLine();
-            Console.WriteLine("Collection of elements that recur only 3 times (Ordinary way).");
+            //Console.WriteLine("Collection of elements that recur only 3 times (Ordinary way).");
             Random rand = new();
-            int[] lottaNumbers = new int[] {5, 5, 277, 5, 7, 2, 7, 1, 7, 21, 54, 277, 3, 11, 11, 11, 4234, 27, 277};
+            int[] lottaNumbers = new int[] { 5, 5, 277, 5, 7, 2, 7, 1, 7, 21, 54, 277, 3, 11, 11, 11, 4234, 27, 277 };
             /*int[] lottaNumbers = new int[100000];
             for (int i = 0; i < lottaNumbers.Length; i++)
             {
                 lottaNumbers[i] = rand.Next(100);
             }*/
 
-            StupidClass<int> numbers = new(lottaNumbers);
 
-            for (int i = 0; i < numbers.NewArray.Length; i++)
+            //StupidClass<int> numbers = new(lottaNumbers);
+            //for (int i = 0; i < numbers.NewArray.Length; i++)
+            //{
+            //    Console.Write(numbers.NewArray[i] + " ");
+            //}
+            //Console.WriteLine();
+            #region LINQ Query 12.3.3
+
+            Console.WriteLine("LINQ Query 12.3.3");
+
+            var queryLinqArray3 = (from element in lottaNumbers select element).Distinct();
+
+            Console.Write("Initial Array : [");
+
+            foreach (var item in lottaNumbers)
             {
-                Console.Write(numbers.NewArray[i] + " ");
+                Console.Write($" {item}");
             }
-            Console.WriteLine();
+            Console.Write(" ]");
+
+            Console.Write("\nDistinct Array : [");
+
+            foreach (var item in queryLinqArray3)
+            {
+                Console.Write($" {item}");
+            }
+            Console.Write(" ]");
+
+
             #endregion
+
+            #region LINQ Method 12.3.3
+
+            Console.WriteLine("\n\nLINQ Method 12.3.3");
+
+
+            var methodLinqArray3 = lottaNumbers.Distinct();
+
+            Console.Write("Initial Array : [");
+
+            foreach (var item in lottaNumbers)
+            {
+                Console.Write($" {item}");
+            }
+            Console.Write(" ]");
+
+            Console.Write("\nDistinct Array : [");
+
+            foreach (var item in queryLinqArray3)
+            {
+                Console.Write($" {item}");
+            }
+            Console.Write(" ]");
+
+
+            #endregion
+
         }
     }
 }

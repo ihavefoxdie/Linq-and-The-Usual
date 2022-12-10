@@ -2,8 +2,6 @@
 {
     public class Worker
     {
-        
-
         public string Name { get; private set; }
         public int Salary { get; set; }
 
