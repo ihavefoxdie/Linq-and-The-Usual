@@ -46,7 +46,7 @@ namespace _12._3
                 Console.WriteLine();
             }
 
-            
+
             #endregion
 
             #region Method 12.3.1
@@ -66,35 +66,66 @@ namespace _12._3
 
 
             //2
-            #region Ordinary 12.3.2
+
             Console.WriteLine();
             Console.WriteLine("Collection of summed salaries for recurring names (Ordinary way).");
             var collection = new Worker[]
             {
                 new("Obama", 1999),
                 new("Roomba", 100000),
-                new("Obama", 10000)
+                new("Roomba", 120000),
+                new("Obama", 10000),
+                new("Nursultanov", 50)
             };
 
-            Overall<Worker> overall = new(collection);
+            #region LINQ Query 12.3.2
 
-            for (int i = 0; i < overall.AllSalary.Length; i++)
+            Console.WriteLine("\nLINQ Query 12.3.2:");
+            var queryLinqArray2 = from element in collection
+                                  group element.Salary by element.Name into workers
+                                  select new { Name = workers.Key, Sum = workers.Sum() };
+
+            foreach (var group in queryLinqArray2)
             {
-                Console.WriteLine("Name: " + overall.AllSalary[i].Name + "; Salary: " +
-                    overall.AllSalary[i].Salary);
+                Console.Write($"{group.Name} : {group.Sum}");
+                Console.WriteLine();
             }
             #endregion
 
-            #region LINQ 12.3.2
+            #region LINQ Method 12.3.2
+            //Overall<Worker> overall = new(collection);
+
+            //for (int i = 0; i < overall.AllSalary.Length; i++)
+            //{
+            //    Console.WriteLine("Name: " + overall.AllSalary[i].Name + "; Salary: " +
+            //        overall.AllSalary[i].Salary);
+            //}
+            Console.WriteLine("\nLINQ Method 12.3.2:");
+
+            var methodLinqArray2 = collection
+                .GroupBy(name => name.Name)
+                .Select(result => new
+                {
+                    Name = result.Key,
+                    Sum = result.Select(p => p.Salary).Sum()
+                }
+                );
+
+            foreach (var groups in methodLinqArray2)
+            {
+                Console.WriteLine($"{groups.Name} : {groups.Sum}");
+            }
 
             #endregion
+
+
 
 
             #region Ordinary 12.3.3
             Console.WriteLine();
             Console.WriteLine("Collection of elements that recur only 3 times (Ordinary way).");
             Random rand = new();
-            int[] lottaNumbers = new int[] {5, 5, 277, 5, 7, 2, 7, 1, 7, 21, 54, 277, 3, 11, 11, 11, 4234, 27, 277};
+            int[] lottaNumbers = new int[] { 5, 5, 277, 5, 7, 2, 7, 1, 7, 21, 54, 277, 3, 11, 11, 11, 4234, 27, 277 };
             /*int[] lottaNumbers = new int[100000];
             for (int i = 0; i < lottaNumbers.Length; i++)
             {
