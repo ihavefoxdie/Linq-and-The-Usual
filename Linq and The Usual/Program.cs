@@ -75,7 +75,7 @@ namespace _12._3
                 new("Roomba", 100000),
                 new("Roomba", 120000),
                 new("Obama", 10000),
-                new("Nursultanov", 50)
+                new("Grey", 50)
             };
 
             #region LINQ Query 12.3.2
@@ -121,9 +121,9 @@ namespace _12._3
 
 
 
-            #region Ordinary 12.3.3
+            
             Console.WriteLine();
-            Console.WriteLine("Collection of elements that recur only 3 times (Ordinary way).");
+            //Console.WriteLine("Collection of elements that recur only 3 times (Ordinary way).");
             Random rand = new();
             int[] lottaNumbers = new int[] { 5, 5, 277, 5, 7, 2, 7, 1, 7, 21, 54, 277, 3, 11, 11, 11, 4234, 27, 277 };
             /*int[] lottaNumbers = new int[100000];
@@ -132,14 +132,64 @@ namespace _12._3
                 lottaNumbers[i] = rand.Next(100);
             }*/
 
-            StupidClass<int> numbers = new(lottaNumbers);
 
-            for (int i = 0; i < numbers.NewArray.Length; i++)
+            //StupidClass<int> numbers = new(lottaNumbers);
+            //for (int i = 0; i < numbers.NewArray.Length; i++)
+            //{
+            //    Console.Write(numbers.NewArray[i] + " ");
+            //}
+            //Console.WriteLine();
+            #region LINQ Query 12.3.3
+
+            Console.WriteLine("LINQ Query 12.3.3");
+
+            var queryLinqArray3 = (from element in lottaNumbers select element).Distinct();
+
+            Console.Write("Initial Array : [");
+
+            foreach (var item in lottaNumbers)
             {
-                Console.Write(numbers.NewArray[i] + " ");
+                Console.Write($" {item}");
             }
-            Console.WriteLine();
+            Console.Write(" ]");
+
+            Console.Write("\nDistinct Array : [");
+
+            foreach (var item in queryLinqArray3)
+            {
+                Console.Write($" {item}");
+            }
+            Console.Write(" ]");
+
+
             #endregion
+
+            #region LINQ Method 12.3.3
+
+            Console.WriteLine("\n\nLINQ Method 12.3.3");
+
+
+            var methodLinqArray3 = lottaNumbers.Distinct();
+
+            Console.Write("Initial Array : [");
+
+            foreach (var item in lottaNumbers)
+            {
+                Console.Write($" {item}");
+            }
+            Console.Write(" ]");
+
+            Console.Write("\nDistinct Array : [");
+
+            foreach (var item in queryLinqArray3)
+            {
+                Console.Write($" {item}");
+            }
+            Console.Write(" ]");
+
+
+            #endregion
+
         }
     }
 }
