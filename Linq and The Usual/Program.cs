@@ -18,46 +18,48 @@ namespace _12._3
             }
             Console.WriteLine("\n");
             //1
-            #region Ordinary 12.3.1
-            Console.WriteLine("New groups (Ordinary way):");
-            Console.WriteLine("Even Numbers(" + arr.EvenSum + "): ");
-            for (int i = 0; i < arr.EvenNumbers.Length; i++)
-            {
-                Console.Write(arr.EvenNumbers[i] + " ");
-            }
-            Console.WriteLine();
+            #region Query 12.3.1
+            //Console.WriteLine("New groups (Ordinary way):");
+            //Console.WriteLine("Even Numbers(" + arr.EvenSum + "): ");
+            //for (int i = 0; i < arr.EvenNumbers.Length; i++)
+            //{
+            //    Console.Write(arr.EvenNumbers[i] + " ");
+            //}
+            //Console.WriteLine();
 
-            Console.WriteLine("Odd Numbers(" + arr.OddSum + "): ");
-            for (int i = 0; i < arr.OddNumbers.Length; i++)
+            //Console.WriteLine("Odd Numbers(" + arr.OddSum + "): ");
+            //for (int i = 0; i < arr.OddNumbers.Length; i++)
+            //{
+            //    Console.Write(arr.OddNumbers[i] + " ");
+            //}
+            //Console.WriteLine();
+
+
+            var queryLinqArray = from element in sex.Select((number, even) => new { number, even = number % 2 })
+                                 group element.number by element.even into groups
+                                 select new { Group = groups.Key, Sum = groups.Sum() };
+
+            Console.WriteLine("Query LINQ : ");
+            foreach (var group in queryLinqArray)
             {
-                Console.Write(arr.OddNumbers[i] + " ");
+                Console.Write($"{group.Group} : {group.Sum}");
+                Console.WriteLine();
             }
-            Console.WriteLine();
+
+            
             #endregion
 
-            #region LINQ 12.3.1
+            #region Method 12.3.1
             Console.WriteLine();
-            /*var Output = sex.GroupBy(
-            number => number = number ,
-            number => number % 2 != 0,
-            (even, odd) => new
-            {
-            Odd = odd,
-            Even = even
-            });*/
 
-            /*var Output = from element in sex
-            group element by element % 2 == 0;*/
+            var methodLinqArray = sex.GroupBy((int groups) => groups % 2).Select(p => new { Group = p.Key, Sum = p.Sum() });
+            Console.WriteLine();
+            Console.WriteLine("Method LINQ : ");
 
-            /*foreach(var item in Output)
+            foreach (var groups in methodLinqArray)
             {
-            //Console.WriteLine("Even numbers: ");
-            foreach (var element in item)
-            {
-
+                Console.WriteLine($"{groups.Group} : {groups.Sum}");
             }
-
-            }*/
 
 
             #endregion
