@@ -1,4 +1,8 @@
 ﻿using Linq_and_The_Usual.Classes;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
 
 namespace _12._3
 {
@@ -19,20 +23,6 @@ namespace _12._3
             Console.WriteLine("\n");
             //1
             #region Query 12.3.1
-            //Console.WriteLine("New groups (Ordinary way):");
-            //Console.WriteLine("Even Numbers(" + arr.EvenSum + "): ");
-            //for (int i = 0; i < arr.EvenNumbers.Length; i++)
-            //{
-            //    Console.Write(arr.EvenNumbers[i] + " ");
-            //}
-            //Console.WriteLine();
-
-            //Console.WriteLine("Odd Numbers(" + arr.OddSum + "): ");
-            //for (int i = 0; i < arr.OddNumbers.Length; i++)
-            //{
-            //    Console.Write(arr.OddNumbers[i] + " ");
-            //}
-            //Console.WriteLine();
 
 
             var queryLinqArray = from element in sex.Select((number, even) => new { number, even = number % 2 })
@@ -65,8 +55,6 @@ namespace _12._3
             #endregion
 
 
-            //2
-
             Console.WriteLine();
             Console.WriteLine("Collection of summed salaries for recurring names (Ordinary way).");
             var collection = new Worker[]
@@ -93,13 +81,8 @@ namespace _12._3
             #endregion
 
             #region LINQ Method 12.3.2
-            //Overall<Worker> overall = new(collection);
 
-            //for (int i = 0; i < overall.AllSalary.Length; i++)
-            //{
-            //    Console.WriteLine("Name: " + overall.AllSalary[i].Name + "; Salary: " +
-            //        overall.AllSalary[i].Salary);
-            //}
+
             Console.WriteLine("\nLINQ Method 12.3.2:");
 
             var methodLinqArray2 = collection
@@ -121,29 +104,10 @@ namespace _12._3
 
 
 
-            
+
             Console.WriteLine();
-            //Console.WriteLine("Collection of elements that recur only 3 times (Ordinary way).");
-            Random rand = new();
+
             int[] lottaNumbers = new int[] { 5, 5, 277, 5, 7, 2, 7, 1, 7, 21, 54, 277, 3, 11, 11, 11, 4234, 27, 277 };
-            /*int[] lottaNumbers = new int[100000];
-            for (int i = 0; i < lottaNumbers.Length; i++)
-            {
-                lottaNumbers[i] = rand.Next(100);
-            }*/
-
-
-            //StupidClass<int> numbers = new(lottaNumbers);
-            //for (int i = 0; i < numbers.NewArray.Length; i++)
-            //{
-            //    Console.Write(numbers.NewArray[i] + " ");
-            //}
-            //Console.WriteLine();
-            #region LINQ Query 12.3.3
-
-            Console.WriteLine("LINQ Query 12.3.3");
-
-            var queryLinqArray3 = (from element in lottaNumbers select element).Distinct();
 
             Console.Write("Initial Array : [");
 
@@ -152,6 +116,17 @@ namespace _12._3
                 Console.Write($" {item}");
             }
             Console.Write(" ]");
+
+            #region LINQ Query 12.3.3
+
+            Console.WriteLine("LINQ Query 12.3.3");
+
+            var queryLinqArray3 = from element in lottaNumbers
+                                  group element by element into grouped
+                                  where grouped.Count() == 3
+                                  select grouped.Key;
+
+
 
             Console.Write("\nDistinct Array : [");
 
@@ -169,19 +144,13 @@ namespace _12._3
             Console.WriteLine("\n\nLINQ Method 12.3.3");
 
 
-            var methodLinqArray3 = lottaNumbers.Distinct();
-
-            Console.Write("Initial Array : [");
-
-            foreach (var item in lottaNumbers)
-            {
-                Console.Write($" {item}");
-            }
-            Console.Write(" ]");
+            var methodLinqArray3 = lottaNumbers.GroupBy(element => element)
+                .Where(x => x.Count() == 3)
+                .Select(x => x.Key);
 
             Console.Write("\nDistinct Array : [");
 
-            foreach (var item in queryLinqArray3)
+            foreach (var item in methodLinqArray3)
             {
                 Console.Write($" {item}");
             }
@@ -190,6 +159,48 @@ namespace _12._3
 
             #endregion
 
+
+
+
+            #region LINQ Query 12.3.4
+            Console.WriteLine();
+
+            Console.WriteLine("LINQ Query 12.3.4");
+
+            var collectionOf2 = new List<int[]> {
+                new[] {4, 5},
+                new[] {2, 3},
+                new[] {3, 4},
+                new[] {10, 11},
+                new[] {0, 1},
+                new[] {30, 2},
+                new[] {5, 5}
+            };
+            var quaryLinqCollOf2 = from element in collectionOf2
+                                   orderby element[0] ascending
+                                   orderby element[1] descending
+                                   select element;
+
+
+            foreach (var item in quaryLinqCollOf2)
+            {
+                Console.WriteLine("{0}, {1}", item[0], item[1]);
+            }
+
+            #endregion
+
+            #region LINQ Method 12.3.5
+            Console.WriteLine("LINQ Method 12.3.4");
+
+            quaryLinqCollOf2 = collectionOf2.
+                OrderBy(x => x[0]).
+                OrderByDescending(y => y[1]);
+
+            foreach (var item in quaryLinqCollOf2)
+            {
+                Console.WriteLine("{0}, {1}", item[0], item[1]);
+            }
+            #endregion
         }
     }
 }
